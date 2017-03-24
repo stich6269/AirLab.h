@@ -6,10 +6,6 @@
 
 #define SERIAL_BAUD 115200
 #define I2C_ADDR 0x38
-#define IT_1_2 0x0 //1/2T
-#define IT_1   0x1 //1T
-#define IT_2   0x2 //2T
-#define IT_4   0x3 //4T
 
 void printBME280Data(Stream * client);
 
@@ -22,10 +18,7 @@ void setup()
 	Serial.begin(SERIAL_BAUD);
 	while (!Serial) {};
 	Wire.begin();
-
-	Wire.beginTransmission(I2C_ADDR);
-	Wire.write((IT_1 << 2) | 0x02);
-	Wire.endTransmission();
+	vuBegin();
 
 	myHumidity.begin();
 	lightMeter.begin();
@@ -45,23 +38,26 @@ void loop()
 
 
 
+void vuBegin() 
+{
+	Wire.beginTransmission(I2C_ADDR);
+	Wire.write((0x1 << 2) | 0x02);
+	Wire.endTransmission();
+}
+
 void readVu()
 {
 	byte msb = 0, lsb = 0;
 	uint16_t uv;
 
-	Wire.requestFrom(I2C_ADDR + 1, 1); //MSB
-	delay(1);
-	if (Wire.available())
-		msb = Wire.read();
+	Wire.requestFrom(I2C_ADDR + 1, 1); delay(1);
+	if (Wire.available()) msb = Wire.read();
 
-	Wire.requestFrom(I2C_ADDR + 0, 1); //LSB
-	delay(1);
-	if (Wire.available())
-		lsb = Wire.read();
+	Wire.requestFrom(I2C_ADDR + 0, 1); delay(1);
+	if (Wire.available()) lsb = Wire.read();
 
 	uv = (msb << 8) | lsb;
-	Serial.println(uv, DEC); //output in steps (16bit)
+	Serial.print("Vumeter: "); Serial.println(uv, DEC);
 }
 
 void readLigth()

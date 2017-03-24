@@ -37,4 +37,5 @@ C:\Users\Tema\ i\ Tanya\AppData\Local\Temp\VMBuilds\DeviceCode\esp8266_d1\Debug\
  C:\Users\Tema\ i\ Tanya\Documents\Arduino\libraries\SparkFun_HTU21D_Humidity_and_Temperature_Sensor_Breakout\src/SparkFunHTU21D.h \
  C:\Users\Tema\ i\ Tanya\Documents\Arduino\libraries\BME280\src/BME280I2C.h \
  C:\Users\Tema\ i\ Tanya\Documents\Arduino\libraries\BME280\src/BME280.h \
+ C:\Users\Tema\ i\ Tanya\Documents\Arduino\libraries\BH1750-master/BH1750.h \
  C:\Program\ Files\ (x86)\Microsoft\ Visual\ Studio\2017\Enterprise\Common7\IDE\Extensions\pabjyzh5.4hi\Micro\ Platforms\default\debuggers\VM_DBG/VM_DBG.h

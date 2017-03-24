@@ -1,23 +1,24 @@
+#include <Arduino.h>
 #include <Wire.h>
 #include "SparkFunHTU21D.h"
 #include <BME280I2C.h>
-#include <Wire.h>   
+#include <BH1750.h>
 
 #define SERIAL_BAUD 115200
-bool metric = true;
 
 void printBME280Data(Stream * client);
-void printBME280CalculatedData(Stream* client);
 
 HTU21D myHumidity;
+BH1750 lightMeter;
 BME280I2C bme;
 
 void setup()
 {
 	Serial.begin(SERIAL_BAUD);
-	while (!Serial) {}
+	while (!Serial) {};
 
 	myHumidity.begin();
+	lightMeter.begin();
 	bme.begin();
 }
 
@@ -25,11 +26,23 @@ void loop()
 {
 	printBME280Data(&Serial);
 	readHumidity();
-	delay(1000);
+	readLigth();
+
 	Serial.println("---------------");
+	delay(1000);
 }
 
 
+
+
+
+void readLigth()
+{
+	uint16_t lux = lightMeter.readLightLevel();
+	Serial.print("Light: ");
+	Serial.print(lux);
+	Serial.println(" lx");
+}
 
 void readHumidity() 
 {
@@ -44,11 +57,11 @@ void readHumidity()
 void printBME280Data(Stream* client) 
 {
 	float temp(NAN), hum(NAN), pres(NAN);
-	float altitude = bme.alt(metric);
+	float altitude = bme.alt(true);
 	uint8_t pressureUnit(3);                                           // unit: B000 = Pa, B001 = hPa, B010 = Hg, B011 = atm, B100 = bar, B101 = torr, B110 = N/m^2, B111 = psi
-	bme.read(pres, temp, hum, metric, pressureUnit);                   // Parameters: (float& pressure, float& temp, float& humidity, bool celsius = false, uint8_t pressureUnit = 0x0)
+	bme.read(pres, temp, hum, true, pressureUnit);                   // Parameters: (float& pressure, float& temp, float& humidity, bool celsius = false, uint8_t pressureUnit = 0x0)
 
 	client->print("Temp: ");     client->print(temp); client->print("C"); client->println();
 	client->print("Pressure: "); client->print(pres); client->print(" atm"); client->println();
-	client->print("Altitude: "); client->print(altitude); client->print((metric ? "m" : "ft")); client->println();
+	client->print("Altitude: "); client->print(altitude); client->print(("m")); client->println();
 }

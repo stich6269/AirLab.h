@@ -255,7 +255,7 @@ PreProcessor.HeaderCount=1
 PreProcessor.PrototypeCount=9
 vm.last.preproc.file.0.file=DeviceCode.ino
 vm.last.preproc.file.0.offset=1
-vm.last.preproc.file.0.length=2887
+vm.last.preproc.file.0.length=2799
 vm.last.preproc.file.0.linecount=95
 vm.last.preproc.file.0.linestart=0
 vm.last.preproc.file.0.lineend=95
@@ -267,7 +267,7 @@ runtime.vm.ide.platforms.path=C:\Program Files (x86)\Microsoft Visual Studio\201
 build.variant.path=C:\Users\Tema i Tanya\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.3.0\variants\d1
 archive_file=core.a
 archive_file_path=C:\Users\Tema i Tanya\AppData\Local\Temp\VMBuilds\DeviceCode\esp8266_d1\Debug\core.a
-extra.time.local=73523923
+extra.time.local=73752284
 tools.ctags.path={runtime.tools.ctags.path}
 tools.ctags.cmd.path={path}/ctags
 tools.ctags.pattern="{cmd.path}" -u --language-force=c++ -f - --c++-kinds=svpf --fields=KSTtzns --line-directives "{source_file}"

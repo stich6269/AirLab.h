@@ -6,7 +6,11 @@
 
 #define SERIAL_BAUD 115200
 #define I2C_ADDR 0x38
+#define pwmPin 0
 
+int prevVal = LOW;
+long th, tl, h, l, ppm;
+unsigned long time;
 void printBME280Data(Stream * client);
 
 HTU21D myHumidity;
@@ -16,6 +20,7 @@ BME280I2C bme;
 void setup()
 {
 	Serial.begin(SERIAL_BAUD);
+	pinMode(pwmPin, INPUT);
 	while (!Serial) {};
 	Wire.begin();
 	vuBegin();
@@ -23,24 +28,68 @@ void setup()
 	myHumidity.begin();
 	lightMeter.begin();
 	bme.begin();
+
+	time = millis();
 }
 
 void loop()
 {
-	printBME280Data(&Serial);
-	readHumidity();
-	readLigth();
-	readVu();
+	if (millis() > time + 5000) {
+		printBME280Data(&Serial);
+		readHumidity();
+		readLigth();
+		readVu();
 
-	Serial.println("---------------");
-	delay(1000);
+		Serial.println("---------------");
+		time = millis();
+	}
+
+	readCo2();
 }
+
+
+
+
+
+
+void readCo2() {
+	long tt = millis();
+	int myVal = digitalRead(pwmPin);
+
+	//Если обнаружили изменение
+	if (myVal == HIGH) {
+		if (myVal != prevVal) {
+			h = tt;
+			tl = h - l;
+			prevVal = myVal;
+		}
+	}
+	else {
+		if (myVal != prevVal) {
+			l = tt;
+			th = l - h;
+			prevVal = myVal;
+			ppm = 5000 * (th - 2) / (th + tl - 4);
+			Serial.println("CO2Sensor: PPM = " + String(ppm));
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
 void vuBegin() 
 {
-	Wire.beginTransmission(I2C_ADDR);
+	Wire.beginTransmission(0x38);
 	Wire.write((0x1 << 2) | 0x02);
 	Wire.endTransmission();
 }
@@ -50,10 +99,10 @@ void readVu()
 	byte msb = 0, lsb = 0;
 	uint16_t uv;
 
-	Wire.requestFrom(I2C_ADDR + 1, 1); delay(1);
+	Wire.requestFrom(0x38 + 1, 1); delay(1);
 	if (Wire.available()) msb = Wire.read();
 
-	Wire.requestFrom(I2C_ADDR + 0, 1); delay(1);
+	Wire.requestFrom(0x38 + 0, 1); delay(1);
 	if (Wire.available()) lsb = Wire.read();
 
 	uv = (msb << 8) | lsb;

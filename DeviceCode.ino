@@ -17,8 +17,7 @@ void printBME280Data(Stream * client);
 HTU21D myHumidity;
 BH1750 lightMeter;
 BME280I2C bme;
-
-Adafruit_ADS1115 ads;  /* Use this for the 16-bit version */
+Adafruit_ADS1115 ads;
 
 void setup()
 {
@@ -55,6 +54,13 @@ void loop()
 
 
 
+
+
+
+
+
+
+
 void adsBegin() {
 	// The ADC input range (or gain) can be changed via the following
 	// functions, but be careful never to exceed VDD +0.3V max, or to
@@ -84,7 +90,6 @@ void readCo2() {
 	long tt = millis();
 	int myVal = digitalRead(pwmPin);
 
-	//Если обнаружили изменение
 	if (myVal == HIGH) {
 		if (myVal != prevVal) {
 			h = tt;

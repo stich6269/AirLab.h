@@ -82,7 +82,7 @@ void adsRead() {
 	int16_t adc0, adc1, adc2, adc3;
 
 	adc0 = ads.readADC_SingleEnded(0);
-	Serial.print("VOC lavel: VOC = "); Serial.println(adc0);
+	Serial.print("VOC lavel: VOC = "); Serial.println(adc0 * 0.0001875);
 }
 
 
@@ -163,10 +163,10 @@ void printBME280Data(Stream* client)
 {
 	float temp(NAN), hum(NAN), pres(NAN);
 	float altitude = bme.alt(true);
-	uint8_t pressureUnit(3);                                           // unit: B000 = Pa, B001 = hPa, B010 = Hg, B011 = atm, B100 = bar, B101 = torr, B110 = N/m^2, B111 = psi
+	uint8_t pressureUnit(0);                                           // unit: B000 = Pa, B001 = hPa, B010 = Hg, B011 = atm, B100 = bar, B101 = torr, B110 = N/m^2, B111 = psi
 	bme.read(pres, temp, hum, true, pressureUnit);                   // Parameters: (float& pressure, float& temp, float& humidity, bool celsius = false, uint8_t pressureUnit = 0x0)
 
 	//client->print("Temp: ");     client->print(temp); client->print("C"); client->println();
-	client->print("Pressure: "); client->print(pres); client->print(" atm"); client->println();
+	client->print("Pressure: "); client->print(pres/133,3); client->print(" hg"); client->println();
 	client->print("Altitude: "); client->print(altitude); client->print(("m")); client->println();
 }

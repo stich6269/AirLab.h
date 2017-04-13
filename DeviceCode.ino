@@ -82,7 +82,9 @@ void adsRead() {
 	int16_t adc0, adc1, adc2, adc3;
 
 	adc0 = ads.readADC_SingleEnded(0);
-	Serial.print("VOC lavel: VOC = "); Serial.println(adc0 * 0.0001875);
+	adc1 = ads.readADC_SingleEnded(1);
+	Serial.print("VOC lavel: VOC = "); Serial.print(adc0*0.0001875); Serial.println(" v");
+	Serial.print("Battarey: V = "); Serial.print(adc1*0.0001875); Serial.println(" v");
 }
 
 
@@ -167,6 +169,6 @@ void printBME280Data(Stream* client)
 	bme.read(pres, temp, hum, true, pressureUnit);                   // Parameters: (float& pressure, float& temp, float& humidity, bool celsius = false, uint8_t pressureUnit = 0x0)
 
 	//client->print("Temp: ");     client->print(temp); client->print("C"); client->println();
-	client->print("Pressure: "); client->print(pres/133,3); client->print(" hg"); client->println();
+	client->print("Pressure: "); client->print(pres*0.0075); client->print(" atm"); client->println();
 	client->print("Altitude: "); client->print(altitude); client->print(("m")); client->println();
 }
